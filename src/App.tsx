@@ -1,35 +1,57 @@
-import {
-  Button,
-  Center,
-  Heading,
-  useColorMode,
-  VStack,
-} from '@chakra-ui/react';
-import pkg from '../package.json';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import IndexedDb from './db';
 
-export function App() {
-  const { toggleColorMode } = useColorMode();
+const IMAGE_URL =
+  'https://avatars.githubusercontent.com/u/98768420?s=400&u=50d28fdfb9273b41715835f6d5e1465241996812&v=4';
+
+function App() {
+  const [indexedDb, setIndexedDb] = useState<IndexedDb | null>(null);
+  const [imageUrl, setImageUrl] = useState('');
+  useEffect(() => {
+    const runIndexDb = async () => {
+      const newIndexedDb = new IndexedDb('banco_teste');
+      await newIndexedDb.createObjectStore(['user_profile_images']);
+      setIndexedDb(newIndexedDb);
+    };
+
+    runIndexDb();
+  }, []);
+
+  async function storeImage() {
+    if (indexedDb) {
+      await axios
+        .get(IMAGE_URL, {
+          responseType: 'blob',
+        })
+        .then((response) => {
+          const url = new Blob([response.data], {
+            type: response.headers['content-type'],
+          });
+
+          indexedDb.putValue('user_profile_images', {
+            createdAt: new Date().toISOString(),
+            url,
+            // id: "aljkdbjaehob",
+          });
+        });
+    }
+  }
+
+  async function getUserImageProfile() {
+    if (indexedDb) {
+      const result = await indexedDb.getValue('user_profile_images', 1);
+      const url = window.URL.createObjectURL(result.url);
+      setImageUrl(url);
+    }
+  }
 
   return (
-    <Center
-      flexDirection="column"
-      h="100vh"
-    >
-      <Heading
-        textAlign="center"
-        mb="8"
-      >
-        Hello World!
-      </Heading>
-
-      <VStack p="8">
-        <Button
-          onClick={() => toggleColorMode()}
-          colorScheme="cyan"
-        >
-          Toggle Color Mode
-        </Button>
-      </VStack>
-    </Center>
+    <div>
+      <button onClick={storeImage}>Store Image</button>
+      <button onClick={getUserImageProfile}>Get Image</button>
+      <img src={imageUrl} />
+    </div>
   );
 }
+export default App;

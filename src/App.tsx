@@ -22,11 +22,6 @@ export function App() {
         Hello World!
       </Heading>
 
-      <Heading textAlign="center">
-        A template for building web apps with Vite, React and Chakra UI -
-        version {pkg.version}
-      </Heading>
-
       <VStack p="8">
         <Button
           onClick={() => toggleColorMode()}

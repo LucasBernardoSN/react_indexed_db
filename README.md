@@ -1,1 +1,3 @@
-# A template for building web apps with Vite, React and Chakra UI
+# App to test image storage and manipulation with IndexedDB
+
+

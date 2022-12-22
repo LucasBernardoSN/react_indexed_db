@@ -1,12 +1,12 @@
 {
-  "name": "vite_react_chakra_eslint_prettier_jest_template",
+  "name": "react_indexed_db",
   "description": "A template for building web apps with Vite, React and Chakra UI",
   "private": true,
   "version": "0.0.0",
   "author": "@LucasBernardoSN",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LucasBernardoSN/vite_react_chakra_eslint_prettier_jest_template"
+    "url": "https://github.com/LucasBernardoSN/react_indexed_db"
   },
   "scripts": {
     "dev": "vite --port 3000",

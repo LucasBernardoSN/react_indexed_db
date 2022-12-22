@@ -18,6 +18,7 @@
     "@chakra-ui/react": "^2.4.4",
     "@emotion/react": "11",
     "@emotion/styled": "11",
+    "axios": "^1.2.1",
     "framer-motion": "8",
     "idb": "^7.1.1"
   },

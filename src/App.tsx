@@ -1,22 +1,25 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import IndexedDb from './db';
+import { IndexedDb, useIndexedDb } from './db/useIndexedDb';
 
 const IMAGE_URL =
   'https://avatars.githubusercontent.com/u/98768420?s=400&u=50d28fdfb9273b41715835f6d5e1465241996812&v=4';
 
 function App() {
+  const { createObjectStore } = useIndexedDb();
+
   const [indexedDb, setIndexedDb] = useState<IndexedDb | null>(null);
   const [imageUrl, setImageUrl] = useState('');
   useEffect(() => {
     const runIndexDb = async () => {
-      const newIndexedDb = new IndexedDb('banco_teste');
-      await newIndexedDb.createObjectStore(['user_profile_images']);
+      const newIndexedDb = await createObjectStore('banco_teste', [
+        'user_profile_images',
+      ]);
       setIndexedDb(newIndexedDb);
     };
 
     runIndexDb();
-  }, []);
+  }, [createObjectStore]);
 
   async function storeImage() {
     if (indexedDb) {
